@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 RUN [ "/bin/bash", "-c", " \
     apt-get update && \
-    apt-get -y upgrade && \
+    apt-get upgrade -y && \
     apt-get install -y wget unzip g++ cmake libyajl-dev libpython3-dev libgmp-dev libmemcached-dev && \
     mkdir -p /root/work && \
     cd /root/work && \
