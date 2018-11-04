@@ -4,5 +4,6 @@ docker run \
   --rm -it \
   -w /home/work \
   -v $PWD:/home/work \
+  -p 9005:9005 \
   dsudo/firebase-cli:1.0 \
   sh
