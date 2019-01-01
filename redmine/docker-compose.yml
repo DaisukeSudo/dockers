@@ -1,0 +1,49 @@
+version: '3.5'
+
+services:
+  redmine:
+    image: redmine:3.4.6-passenger
+    container_name: redmine
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      TZ: Asia/Tokyo
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_PASSWORD: password
+      REDMINE_DB_ENCODING: utf8mb4
+    volumes:
+      - /c/docker/redmine/share/redmine:/home/host
+    depends_on:
+      - db
+      - memcached
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_redmine
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: redmine
+      MYSQL_USER: redmine
+      MYSQL_PASSWORD: password
+#    ports:
+#      - 3306:3306
+    volumes:
+      - redmine-data:/var/lib/mysql
+      - /c/docker/redmine/share/mysql:/home/host
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+
+  memcached:
+    image: memcached:1.5-alpine
+    container_name: memcached_redmine
+    restart: unless-stopped
+#    ports:
+#      - 11211:11211
+
+volumes:
+  redmine-data:
+    name: redmine-data
